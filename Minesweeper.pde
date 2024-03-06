@@ -50,7 +50,7 @@ public int countMines(int row, int col) {
   for(int r = row-1; r < 2; r++)
     for(int c = col-1; c < 2; c++)
       for(int i = 0; i < mines.size(); i++)
-        if(isValid(r,c) && mines.get(i) )
+        if(isValid(row, col))
           numMines++;
   return numMines;
 }
@@ -75,6 +75,8 @@ public class MSButton {
   // called by manager
   public void mousePressed () {
     clicked = true;
+    if(mouseButton == RIGHT)
+      flagged = true;
     setLabel(countMines(myRow,myCol));
   }
   public void draw () {    
