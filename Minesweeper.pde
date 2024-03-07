@@ -21,7 +21,7 @@ public void setMines() {
   int c = 0;
   for (int i = 0; i < NUM_MINES; i++) {
     r = (int)(Math.random()*NUM_ROWS);
-    c = (int)(Math.random()*NUM_ROWS);
+    c = (int)(Math.random()*NUM_COLS);
     MSButton newMine = new MSButton(r, c);
     mines.add(newMine);
     System.out.println("(" + c + ", " + r + ")");
@@ -37,7 +37,9 @@ public boolean isWon() {
   return false;
 }
 public void displayLosingMessage() {
-  //your code here
+    rect(20, 20, 400/NUM_COLS, 400/NUM_ROWS);
+    fill(255);
+    text("you suck", 400/NUM_COLS, 400/NUM_ROWS);
 }
 public void displayWinningMessage() {
   //your code here
@@ -47,10 +49,9 @@ public boolean isValid(int r, int c) {
 }
 public int countMines(int row, int col) {
   int numMines = 0;
-  for(int r = row-1; r < 2; r++)
-    for(int c = col-1; c < 2; c++)
-      for(int i = 0; i < mines.size(); i++)
-        if(isValid(row, col))
+  for(int r = row-1; r < row+1; r++)
+    for(int c = col-1; c < col+1; c++)
+        if(isValid(r, c) && mines.contains(buttons[r][c]))
           numMines++;
   return numMines;
 }
@@ -77,7 +78,17 @@ public class MSButton {
     clicked = true;
     if(mouseButton == RIGHT)
       flagged = true;
-    setLabel(countMines(myRow,myCol));
+    if(mines.contains(this)){
+      displayLosingMessage();
+      for(int r = 0; r <= NUM_ROWS; r++)
+        for(int c = 0; c <= NUM_COLS; c++)
+          if(isValid(r, c))
+            if(!(mines.contains(buttons[r][c])) && buttons[r][c].clicked == false && buttons[r][c].flagged == false)
+              buttons[r][c].mousePressed(); 
+    }
+    if(countMines(myRow, myCol) > 0 && flagged == false)
+       setLabel(countMines(myRow,myCol));
+        
   }
   public void draw () {    
     if (flagged)
@@ -85,9 +96,9 @@ public class MSButton {
     else if ( clicked && mines.contains(this) ) 
       fill(255, 0, 0);
     else if (clicked)
-      fill( 200 );
+      fill(200);
     else 
-    fill( 100 );
+    fill(100);
 
     rect(x, y, width, height);
     fill(0);
