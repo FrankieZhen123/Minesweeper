@@ -37,9 +37,9 @@ public boolean isWon() {
   return false;
 }
 public void displayLosingMessage() {
-    rect(20, 20, 400/NUM_COLS, 400/NUM_ROWS);
-    fill(255);
-    text("you suck", 400/NUM_COLS, 400/NUM_ROWS);
+  textSize(128);
+  fill(0);
+  text("You LOSE! LOL", (float)200, (float)200);
 }
 public void displayWinningMessage() {
   //your code here
