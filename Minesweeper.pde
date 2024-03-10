@@ -1,7 +1,7 @@
 import de.bezier.guido.*;
-private final static int NUM_ROWS = 10;
-private final static int NUM_COLS = 10;
-private final static int NUM_MINES = 10;
+private final static int NUM_ROWS = 20;
+private final static int NUM_COLS = 20;
+private final static int NUM_MINES = 30;
 private MSButton[][] buttons = new MSButton [NUM_ROWS][NUM_COLS]; //2d array of minesweeper buttons
 private ArrayList <MSButton> mines = new ArrayList(NUM_MINES); //ArrayList of just the minesweeper buttons that are mined
 
@@ -18,9 +18,9 @@ public void setup () {
 
 public void setMines() {
   int r = (int)(Math.random()*NUM_ROWS), c = (int)(Math.random()*NUM_COLS);
-  mines.add(buttons[r][c]);
-  System.out.println("(" + c + ", " + r + ")");
-  }
+  if(!mines.contains(buttons[r][c]))
+    mines.add(buttons[r][c]);
+}
 
 public int countMines(int row, int col) {
   int numMines = 0;
@@ -28,7 +28,6 @@ public int countMines(int row, int col) {
     for(int c = col-1; c < col+2; c++)
       if(isValid(r, c) && mines.contains(buttons[r][c]))
           numMines++;
-  System.out.println(numMines);
   return numMines;
 }
 
@@ -50,17 +49,25 @@ public boolean isWon() {
 }
 
 public void displayLosingMessage() {
-  textSize(128);
-  rect(0,0,100,200);
-  fill(0);
-  text("You LOSE! LOL", (float)100, (float)100);
+  int row = NUM_ROWS/2-1;
+  buttons[row][NUM_COLS/2-6].setLabel("Y");
+  buttons[row][NUM_COLS/2-5].setLabel("O");
+  buttons[row][NUM_COLS/2-4].setLabel("U");
+  buttons[row][NUM_COLS/2-2].setLabel("L");
+  buttons[row][NUM_COLS/2-1].setLabel("O");
+  buttons[row][NUM_COLS/2].setLabel("S");
+  buttons[row][NUM_COLS/2+1].setLabel("E");
+  buttons[row][NUM_COLS/2+3].setLabel("L");
+  buttons[row][NUM_COLS/2+4].setLabel("O");
+  buttons[row][NUM_COLS/2+5].setLabel("L");
+  buttons[row][NUM_COLS/2+6].setLabel("!");
+  for(int i = 0; i < mines.size(); i++)
+    if(mines.get(i).clicked == false)
+      mines.get(i).mousePressed();
 }
 
 public void displayWinningMessage() {
-  textSize(128);
-  rect(0,0,100,200);
-  fill(0);
-  text("Nice Job!", (float)100, (float)100);
+  int row = NUM_ROWS/2-1;
 }
 
 public class MSButton {
