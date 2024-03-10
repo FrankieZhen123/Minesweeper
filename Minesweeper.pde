@@ -1,14 +1,13 @@
 import de.bezier.guido.*;
-final int NUM_ROWS = 10;
-final int NUM_COLS = 10;
-final int NUM_MINES = 5;
+private final static int NUM_ROWS = 10;
+private final static int NUM_COLS = 10;
+private final static int NUM_MINES = 5;
 private MSButton[][] buttons = new MSButton [NUM_ROWS][NUM_COLS]; //2d array of minesweeper buttons
-private ArrayList <MSButton> mines = new ArrayList (NUM_ROWS); //ArrayList of just the minesweeper buttons that are mined
+private ArrayList <MSButton> mines = new ArrayList(NUM_MINES); //ArrayList of just the minesweeper buttons that are mined
 
 public void setup () {
   size(400, 400);
   textAlign(CENTER, CENTER);
-  // make the manager
   Interactive.make(this);
   for (int r = 0; r < NUM_ROWS; r++)
     for (int c = 0; c < NUM_COLS; c++)
@@ -30,16 +29,16 @@ public void setMines() {
 
 public int countMines(int row, int col) {
   int numMines = 0;
-  for(int r = row-1; r < row+1; r++)
-    for(int c = col-1; c < col+1; c++)
-        if(isValid(r, c) && mines.contains(buttons[r][c]))
+  for(int r = row-1; r < row+2; r++)
+    for(int c = col-1; c < col+2; c++)
+      if(isValid(r, c) && mines.contains(buttons[r][c]))
           numMines++;
   System.out.println(numMines);
   return numMines;
 }
 
 public boolean isValid(int r, int c) {
-  return(r >= 0 && c >= 0 && r < NUM_ROWS && c < NUM_COLS);
+  return (r >= 0 && c >= 0 && r < NUM_ROWS && c < NUM_COLS);
 }
 
 public void draw () {
@@ -90,19 +89,21 @@ public class MSButton {
   // called by manager
   public void mousePressed () {
     clicked = true;
-    flagged = false;
-    if(mouseButton == RIGHT)
+    if(mouseButton == RIGHT){
       flagged = !flagged;
-    if(mines.contains(this) && flagged == false){
-      displayLosingMessage();
-      for(int r = 0; r <= NUM_ROWS; r++)
-        for(int c = 0; c <= NUM_COLS; c++)
-          if(isValid(r, c))
-            if(!(mines.contains(buttons[r][c])) && buttons[r][c].clicked == false && buttons[r][c].flagged == false)
-              buttons[r][c].mousePressed(); 
+      if(flagged == false)
+        clicked = false;
     }
-    if(countMines(myRow,myCol) > 0 && flagged == false)
-       setLabel(countMines(myRow,myCol));
+    else if(mines.contains(this))
+      displayLosingMessage();
+    else if(countMines(myRow,myCol) > 0)
+      setLabel(countMines(myRow,myCol));
+    else {
+      for(int r = myRow-1; r < myRow+2; r++)
+        for(int c = myCol-1; c < myCol+2; c++)
+          if(isValid(r,c) && buttons[r][c].clicked == false)
+            buttons[r][c].mousePressed();
+    }
   }
   public void draw () { 
     if (flagged)
