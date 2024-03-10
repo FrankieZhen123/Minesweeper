@@ -50,17 +50,18 @@ public boolean isWon() {
 
 public void displayLosingMessage() {
   int row = NUM_ROWS/2-1;
-  buttons[row][NUM_COLS/2-6].setLabel("Y");
-  buttons[row][NUM_COLS/2-5].setLabel("O");
-  buttons[row][NUM_COLS/2-4].setLabel("U");
-  buttons[row][NUM_COLS/2-2].setLabel("L");
-  buttons[row][NUM_COLS/2-1].setLabel("O");
-  buttons[row][NUM_COLS/2].setLabel("S");
-  buttons[row][NUM_COLS/2+1].setLabel("E");
-  buttons[row][NUM_COLS/2+3].setLabel("L");
-  buttons[row][NUM_COLS/2+4].setLabel("O");
-  buttons[row][NUM_COLS/2+5].setLabel("L");
-  buttons[row][NUM_COLS/2+6].setLabel("!");
+  int col = NUM_COLS/2;
+  buttons[row][col-6].setLabel("Y");
+  buttons[row][col-5].setLabel("O");
+  buttons[row][col-4].setLabel("U");
+  buttons[row][col-2].setLabel("L");
+  buttons[row][col-1].setLabel("O");
+  buttons[row][col].setLabel("S");
+  buttons[row][col+1].setLabel("E");
+  buttons[row][col+3].setLabel("L");
+  buttons[row][col+4].setLabel("O");
+  buttons[row][col+5].setLabel("L");
+  buttons[row][col+6].setLabel("!");
   for(int i = 0; i < mines.size(); i++)
     if(mines.get(i).clicked == false)
       mines.get(i).mousePressed();
@@ -68,6 +69,15 @@ public void displayLosingMessage() {
 
 public void displayWinningMessage() {
   int row = NUM_ROWS/2-1;
+  int col = NUM_COLS/2;
+  buttons[row][col-4].setLabel("N");
+  buttons[row][col-3].setLabel("I");
+  buttons[row][col-2].setLabel("C");
+  buttons[row][col-1].setLabel("E");
+  buttons[row][col+1].setLabel("J");
+  buttons[row][col+2].setLabel("O");
+  buttons[row][col+3].setLabel("B");
+  buttons[row][col+4].setLabel("!");
 }
 
 public class MSButton {
