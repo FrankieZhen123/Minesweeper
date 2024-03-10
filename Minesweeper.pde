@@ -8,7 +8,6 @@ private ArrayList <MSButton> mines = new ArrayList (NUM_ROWS); //ArrayList of ju
 public void setup () {
   size(400, 400);
   textAlign(CENTER, CENTER);
-
   // make the manager
   Interactive.make(this);
   for (int r = 0; r < NUM_ROWS; r++)
@@ -16,6 +15,7 @@ public void setup () {
       buttons[r][c] = new MSButton(r, c);
   setMines();
 }
+
 public void setMines() {
   int r = 0;
   int c = 0;
@@ -27,26 +27,7 @@ public void setMines() {
     System.out.println("(" + c + ", " + r + ")");
   }
 }
-public void draw () {
-  background(0);
-  if (isWon() == true)
-    displayWinningMessage();
-}
-public boolean isWon() {
-  //your code here
-  return false;
-}
-public void displayLosingMessage() {
-  textSize(128);
-  fill(0);
-  text("You LOSE! LOL", (float)200, (float)200);
-}
-public void displayWinningMessage() {
-  //your code here
-}
-public boolean isValid(int r, int c) {
-  return(r >= 0 && c >= 0 && r < NUM_ROWS && c < NUM_COLS);
-}
+
 public int countMines(int row, int col) {
   int numMines = 0;
   for(int r = row-1; r < row+1; r++)
@@ -56,6 +37,38 @@ public int countMines(int row, int col) {
   System.out.println(numMines);
   return numMines;
 }
+
+public boolean isValid(int r, int c) {
+  return(r >= 0 && c >= 0 && r < NUM_ROWS && c < NUM_COLS);
+}
+
+public void draw () {
+  background(0);
+  if (isWon() == true)
+    displayWinningMessage();
+}
+
+public boolean isWon() {
+  for(int i = 0; i < mines.size(); i++)
+    if(mines.get(i).isFlagged() == true)
+      return true;
+  return false;
+}
+
+public void displayLosingMessage() {
+  textSize(128);
+  rect(0,0,100,200);
+  fill(0);
+  text("You LOSE! LOL", (float)100, (float)100);
+}
+
+public void displayWinningMessage() {
+  textSize(128);
+  rect(0,0,100,200);
+  fill(0);
+  text("Nice Job!", (float)100, (float)100);
+}
+
 public class MSButton {
   private int myRow, myCol;
   private float x, y, width, height;
@@ -79,7 +92,7 @@ public class MSButton {
     clicked = true;
     flagged = false;
     if(mouseButton == RIGHT)
-      flagged = true;
+      flagged = !flagged;
     if(mines.contains(this) && flagged == false){
       displayLosingMessage();
       for(int r = 0; r <= NUM_ROWS; r++)
@@ -88,18 +101,18 @@ public class MSButton {
             if(!(mines.contains(buttons[r][c])) && buttons[r][c].clicked == false && buttons[r][c].flagged == false)
               buttons[r][c].mousePressed(); 
     }
-    if(countMines(myRow, myCol) > 0 && flagged == false)
+    if(countMines(myRow,myCol) > 0 && flagged == false)
        setLabel(countMines(myRow,myCol));
   }
-  public void draw () {    
+  public void draw () { 
     if (flagged)
       fill(0);
-    else if ( clicked && mines.contains(this) ) 
+    else if (clicked && mines.contains(this)) 
       fill(255, 0, 0);
     else if (clicked)
       fill(200);
     else 
-    fill(100);
+      fill(100);
 
     rect(x, y, width, height);
     fill(0);
