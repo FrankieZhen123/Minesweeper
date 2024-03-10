@@ -42,9 +42,12 @@ public void draw () {
 }
 
 public boolean isWon() {
+  int n = 0;
   for(int i = 0; i < mines.size(); i++)
     if(mines.get(i).isFlagged() == true)
-      return true;
+      n++;
+  if(n == mines.size())
+    return true;
   return false;
 }
 
