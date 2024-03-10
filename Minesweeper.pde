@@ -53,6 +53,7 @@ public int countMines(int row, int col) {
     for(int c = col-1; c < col+1; c++)
         if(isValid(r, c) && mines.contains(buttons[r][c]))
           numMines++;
+  System.out.println(numMines);
   return numMines;
 }
 public class MSButton {
@@ -76,9 +77,10 @@ public class MSButton {
   // called by manager
   public void mousePressed () {
     clicked = true;
+    flagged = false;
     if(mouseButton == RIGHT)
       flagged = true;
-    if(mines.contains(this)){
+    if(mines.contains(this) && flagged == false){
       displayLosingMessage();
       for(int r = 0; r <= NUM_ROWS; r++)
         for(int c = 0; c <= NUM_COLS; c++)
@@ -88,7 +90,6 @@ public class MSButton {
     }
     if(countMines(myRow, myCol) > 0 && flagged == false)
        setLabel(countMines(myRow,myCol));
-        
   }
   public void draw () {    
     if (flagged)
